@@ -10,6 +10,10 @@ class UserRepository(private val userDao: UserDao) {
         userDao.insertUser(user)
     }
 
+    suspend fun updateUser(user: User) {
+        userDao.updateUser(user) // No need for email check here
+    }
+
     // Validate user login by email
     suspend fun loginUser(email: String, password: String): User? {
         val user = userDao.getUserByEmail(email)

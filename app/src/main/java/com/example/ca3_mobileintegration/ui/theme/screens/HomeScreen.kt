@@ -7,22 +7,28 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ca3_mobileintegration.ViewModel.HomeViewModel
+import com.example.ca3_mobileintegration.ViewModel.HomeViewModelFactory
+import com.example.ca3_mobileintegration.data.model.database.AppDatabase
 import com.example.ca3_mobileintegration.navigation.Screen
 
 // Sample data class representing a plant
 data class Plant(val name: String, val moistureLevel: Int)
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(navController: NavHostController,email: String) {
     val plants = listOf(
         Plant("Rose", 70),
         Plant("Cactus", 30),
         Plant("Tulip", 50)
     )
+//    val userEmail = "user@example.com"
 
     Column(
         modifier = Modifier
@@ -64,6 +70,11 @@ fun HomeScreen(navController: NavHostController) {
         ) {
             Text(text = "View All Plants")
         }
+        Button(onClick = {
+            navController.navigate("edit_profile/$email") // Pass email as part of the route
+        }) {
+            Text(text = "Edit Profile")
+        }
     }
 }
 
@@ -86,3 +97,51 @@ fun PlantCard(plant: Plant) {
         }
     }
 }
+//@Composable
+//fun HomeScreen(navController: NavHostController, userId: Int) {
+//    // Get the RoomDao from the database instance
+//    val db = AppDatabase.getDatabase(navController.context)
+//    val userDao = db.userDao()
+//
+//    // Create an instance of HomeViewModel using ViewModelFactory
+//    val homeViewModel: HomeViewModel = viewModel(
+//        factory = HomeViewModelFactory(userDao)
+//    )
+//
+//    // Fetch user data when HomeScreen is loaded
+//    LaunchedEffect(key1 = userId) {
+//        homeViewModel.fetchUserData(userId)
+//    }
+//
+//    // Get the user data from ViewModel
+//    val user = homeViewModel.user
+//
+//    // UI display
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .padding(16.dp),
+//        verticalArrangement = Arrangement.SpaceBetween
+//    ) {
+//        if (user != null) {
+//            // Display username and email
+//            Text(
+//                text = "Welcome, ${user.name}",
+//                style = androidx.compose.material3.MaterialTheme.typography.headlineMedium,
+//                modifier = Modifier.align(Alignment.CenterHorizontally)
+//            )
+//            Text(
+//                text = "Email: ${user.email}",
+//                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+//                modifier = Modifier.align(Alignment.CenterHorizontally)
+//            )
+//        } else {
+//            // Display a loading indicator or message
+//            Text(text = "Loading user data...")
+//        }
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        // Your LazyColumn and other UI elements...
+//    }
+//}

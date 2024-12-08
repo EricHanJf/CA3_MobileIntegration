@@ -40,7 +40,7 @@ fun LoginScreen(navController: NavHostController, userDao: UserDao) {
         // Background image
         val backgroundImage = painterResource(id = com.example.ca3_mobileintegration.R.drawable.background)
         Image(
-            painter = backgroundImage,// Replace with your image
+            painter = backgroundImage,
             contentDescription = "Background Image",
             modifier = Modifier
                 .fillMaxSize()
@@ -52,7 +52,7 @@ fun LoginScreen(navController: NavHostController, userDao: UserDao) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .align(Alignment.Center), // Center the form on screen
+                .align(Alignment.Center),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -61,17 +61,16 @@ fun LoginScreen(navController: NavHostController, userDao: UserDao) {
                 text = "Welcome to HydraBloom",
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 24.dp),
-                color = Color.White // Make sure the text is visible on top of the background
+                color = Color.White
             )
             Text(
                 text = "Login",
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 24.dp),
                 color = Color.White
-                )
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
-
 
             TextField(
                 value = email,
@@ -98,9 +97,11 @@ fun LoginScreen(navController: NavHostController, userDao: UserDao) {
                     errorMessage = ""
 
                     coroutineScope.launch {
+                        // Fetch user from the database
                         val user = userDao.getUserByEmail(email)
                         if (user != null && user.password == password) {
-                            navController.navigate(Screen.Home.route) // Navigate to HomeScreen
+                            // Navigate to HomeScreen with the user's email
+                            navController.navigate("home/${user.email}") // Pass the email
                         } else {
                             errorMessage = "Invalid email or password"
                         }
