@@ -9,24 +9,39 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 
 // Sample data class representing a plant
-data class DetailedPlant(val name: String, val moistureLevel: Int, val waterRequirement: Int)
+data class DetailedPlant(val name: String, val moistureLevel: Int, val imageUrl: String)
 
 @Composable
 fun PlantListScreen() {
     val plants = listOf(
-        DetailedPlant("Rose", 70, 500),
-        DetailedPlant("Cactus", 30, 100),
-        DetailedPlant("Tulip", 50, 300)
+        Plant(
+            "Rose",
+            70,
+            "https://i.pinimg.com/736x/06/54/7a/06547a402611c9e9157175f37f329823.jpg"
+        ),
+        Plant(
+            "Cactus",
+            30,
+            "https://www.gardens4you.ie/media/catalog/product/cache/6d6e270e1eef6d7aa204aa65622d8cce/f/d/fd15680wh.jpg"
+        ),
+        Plant("Tulip", 50, "https://storage.googleapis.com/pod_public/1300/202829.jpg"),
+        Plant(
+            "Sunflower",
+            70,
+            "https://media.interflora.ie/i/interflora/tall-sunflowers-yellow-skyscraper"
+        )
     )
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = "All Plants",
@@ -37,36 +52,44 @@ fun PlantListScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(plants) { plant ->
-                DetailedPlantCard(plant = plant)
+                PlantCard(plant = plant)
             }
         }
-    }
-}
-
-@Composable
-fun DetailedPlantCard(plant: DetailedPlant) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = "Plant: ${plant.name}",
-                style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
-            )
-            Text(
-                text = "Moisture Level: ${plant.moistureLevel}%",
-                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
-            )
-            Text(
-                text = "Water Requirement: ${plant.waterRequirement} ml/day",
-                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
-            )
+        @Composable
+        fun PlantCard(plant: Plant) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // Load image using Coil
+                    AsyncImage(
+                        model = plant.imageUrl,
+                        contentDescription = "Image of ${plant.name}",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(150.dp)
+                    )
+                    Text(
+                        text = "Plant: ${plant.name}",
+                        style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Start
+                    )
+                    Text(
+                        text = "Moisture Level: ${plant.moistureLevel}%",
+                        style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Start
+                    )
+                }
+            }
         }
     }
 }

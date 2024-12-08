@@ -25,21 +25,12 @@ sealed class Screen(val route: String) {
 fun AppNavigation(navController: NavHostController, userDao: UserDao) {
     NavHost(navController = navController, startDestination = Screen.Login.route) {
         composable(Screen.Login.route) {
-            LoginScreen(navController,userDao)
+            LoginScreen(navController, userDao)
         }
-//        composable(Screen.Home.route) {
-//            HomeScreen(navController)
-//        }
         composable("home/{email}") { backStackEntry ->
             val email = backStackEntry.arguments?.getString("email") ?: ""
             HomeScreen(navController, email) // Pass the email to HomeScreen
         }
-
-
-//        composable(Screen.Home.route) {
-//            val userId = 1 // Retrieve this value from your authentication system
-//            HomeScreen(navController = navController, userId = userId)
-//        }
         composable(Screen.AddPlant.route) {
             AddPlantScreen(navController)
         }
@@ -49,15 +40,12 @@ fun AppNavigation(navController: NavHostController, userDao: UserDao) {
         composable(Screen.PlantList.route) {
             PlantListScreen()
         }
-//        composable(Screen.EditProfile.route) {
-//            EditProfileScreen(navController, userDao)
-//        }
         composable("edit_profile/{email}") { backStackEntry ->
             val email = backStackEntry.arguments?.getString("email") ?: ""
             EditProfileScreen(navController, userDao, email)
         }
-
     }
 }
+
 
 

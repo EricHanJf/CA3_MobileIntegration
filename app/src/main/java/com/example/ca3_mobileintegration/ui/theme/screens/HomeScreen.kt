@@ -35,7 +35,7 @@ fun HomeScreen(navController: NavHostController, email: String) {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "My Plants",
+            text = "Hydrabloom",
             style = androidx.compose.material3.MaterialTheme.typography.headlineMedium,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
