@@ -7,28 +7,26 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.navigation.NavHostController
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.ca3_mobileintegration.ViewModel.HomeViewModel
-import com.example.ca3_mobileintegration.ViewModel.HomeViewModelFactory
-import com.example.ca3_mobileintegration.data.model.database.AppDatabase
+import coil.compose.AsyncImage
 import com.example.ca3_mobileintegration.navigation.Screen
+import androidx.navigation.NavHostController
 
-// Sample data class representing a plant
-data class Plant(val name: String, val moistureLevel: Int)
+// Updated data class with an imageUrl property
+data class Plant(val name: String, val moistureLevel: Int, val imageUrl: String)
 
 @Composable
-fun HomeScreen(navController: NavHostController,email: String) {
+fun HomeScreen(navController: NavHostController, email: String) {
+    // List of plants with their images
     val plants = listOf(
-        Plant("Rose", 70),
-        Plant("Cactus", 30),
-        Plant("Tulip", 50)
+        Plant("Rose", 70, "https://i.pinimg.com/736x/06/54/7a/06547a402611c9e9157175f37f329823.jpg"),
+        Plant("Cactus", 30, "https://www.gardens4you.ie/media/catalog/product/cache/6d6e270e1eef6d7aa204aa65622d8cce/f/d/fd15680wh.jpg"),
+        Plant("Tulip", 50, "https://storage.googleapis.com/pod_public/1300/202829.jpg"),
+        Plant("Sunflower", 70, "https://media.interflora.ie/i/interflora/tall-sunflowers-yellow-skyscraper")
     )
-//    val userEmail = "user@example.com"
 
     Column(
         modifier = Modifier
@@ -70,9 +68,11 @@ fun HomeScreen(navController: NavHostController,email: String) {
         ) {
             Text(text = "View All Plants")
         }
-        Button(onClick = {
-            navController.navigate("edit_profile/$email") // Pass email as part of the route
-        }) {
+
+        Button(
+            onClick = { navController.navigate("edit_profile/$email") }, // Pass email as part of the route
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
             Text(text = "Edit Profile")
         }
     }
@@ -85,63 +85,28 @@ fun PlantCard(plant: Plant) {
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // Load image using Coil
+            AsyncImage(
+                model = plant.imageUrl,
+                contentDescription = "Image of ${plant.name}",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+            )
             Text(
                 text = "Plant: ${plant.name}",
-                style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
+                style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Start
             )
             Text(
                 text = "Moisture Level: ${plant.moistureLevel}%",
-                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
+                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Start
             )
         }
     }
 }
-//@Composable
-//fun HomeScreen(navController: NavHostController, userId: Int) {
-//    // Get the RoomDao from the database instance
-//    val db = AppDatabase.getDatabase(navController.context)
-//    val userDao = db.userDao()
-//
-//    // Create an instance of HomeViewModel using ViewModelFactory
-//    val homeViewModel: HomeViewModel = viewModel(
-//        factory = HomeViewModelFactory(userDao)
-//    )
-//
-//    // Fetch user data when HomeScreen is loaded
-//    LaunchedEffect(key1 = userId) {
-//        homeViewModel.fetchUserData(userId)
-//    }
-//
-//    // Get the user data from ViewModel
-//    val user = homeViewModel.user
-//
-//    // UI display
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(16.dp),
-//        verticalArrangement = Arrangement.SpaceBetween
-//    ) {
-//        if (user != null) {
-//            // Display username and email
-//            Text(
-//                text = "Welcome, ${user.name}",
-//                style = androidx.compose.material3.MaterialTheme.typography.headlineMedium,
-//                modifier = Modifier.align(Alignment.CenterHorizontally)
-//            )
-//            Text(
-//                text = "Email: ${user.email}",
-//                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
-//                modifier = Modifier.align(Alignment.CenterHorizontally)
-//            )
-//        } else {
-//            // Display a loading indicator or message
-//            Text(text = "Loading user data...")
-//        }
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        // Your LazyColumn and other UI elements...
-//    }
-//}
