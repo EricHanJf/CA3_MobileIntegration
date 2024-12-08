@@ -5,11 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [User::class], version = 1)
+//@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class, Plant::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
 
     // Access the UserDao
     abstract fun userDao(): UserDao
+    abstract fun plantDao(): PlantDao
 
     companion object {
 
@@ -22,7 +24,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

@@ -13,7 +13,11 @@ import com.example.ca3_mobileintegration.navigation.Screen
 
 @Composable
 fun AddPlantScreen(navController: NavHostController) {
+    // State variables for plant details
     var plantName by remember { mutableStateOf("") }
+    var temperature by remember { mutableStateOf("") }
+    var humidity by remember { mutableStateOf("") }
+    var location by remember { mutableStateOf("") }
     var waterRequirement by remember { mutableStateOf("") }
 
     Column(
@@ -40,6 +44,33 @@ fun AddPlantScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
+            value = temperature,
+            onValueChange = { temperature = it },
+            label = { Text("Preferred Temperature (°C)") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = humidity,
+            onValueChange = { humidity = it },
+            label = { Text("Preferred Humidity (%)") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = location,
+            onValueChange = { location = it },
+            label = { Text("Location") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
             value = waterRequirement,
             onValueChange = { waterRequirement = it },
             label = { Text("Water Requirement (ml/day)") },
@@ -50,8 +81,9 @@ fun AddPlantScreen(navController: NavHostController) {
 
         Button(
             onClick = {
-                // Add plant to data source logic here
-                navController.navigate(Screen.Home.route) // Navigate back to Home
+                // Handle adding the plant to the database
+                // Navigate back to the Plant List or Home screen
+                navController.navigate(Screen.PlantList.route)
             }
         ) {
             Text(text = "Save Plant")
