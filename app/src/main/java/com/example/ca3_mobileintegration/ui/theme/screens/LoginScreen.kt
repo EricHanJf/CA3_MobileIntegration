@@ -100,8 +100,8 @@ fun LoginScreen(navController: NavHostController, userDao: UserDao) {
                         // Fetch user from the database
                         val user = userDao.getUserByEmail(email)
                         if (user != null && user.password == password) {
-                            // Navigate to HomeScreen with the user's email
-                            navController.navigate("home/${user.email}") // Pass the email
+                            // Navigate to HomeScreen with the user's email and name
+                            navController.navigate("home/${user.email}/${user.name}") // Pass the email and name
                         } else {
                             errorMessage = "Invalid email or password"
                         }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,14 +23,16 @@ import com.example.ca3_mobileintegration.navigation.Screen
 data class Plant(val name: String, val moistureLevel: Int)
 
 @Composable
-fun HomeScreen(navController: NavHostController,email: String) {
+fun HomeScreen(navController: NavHostController,email: String,name: String) {
     val plants = listOf(
         Plant("Rose", 70),
         Plant("Cactus", 30),
         Plant("Tulip", 50)
     )
 //    val userEmail = "user@example.com"
-
+    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = "Welcome, $name!", style = MaterialTheme.typography.headlineMedium)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -97,51 +100,4 @@ fun PlantCard(plant: Plant) {
         }
     }
 }
-//@Composable
-//fun HomeScreen(navController: NavHostController, userId: Int) {
-//    // Get the RoomDao from the database instance
-//    val db = AppDatabase.getDatabase(navController.context)
-//    val userDao = db.userDao()
-//
-//    // Create an instance of HomeViewModel using ViewModelFactory
-//    val homeViewModel: HomeViewModel = viewModel(
-//        factory = HomeViewModelFactory(userDao)
-//    )
-//
-//    // Fetch user data when HomeScreen is loaded
-//    LaunchedEffect(key1 = userId) {
-//        homeViewModel.fetchUserData(userId)
-//    }
-//
-//    // Get the user data from ViewModel
-//    val user = homeViewModel.user
-//
-//    // UI display
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(16.dp),
-//        verticalArrangement = Arrangement.SpaceBetween
-//    ) {
-//        if (user != null) {
-//            // Display username and email
-//            Text(
-//                text = "Welcome, ${user.name}",
-//                style = androidx.compose.material3.MaterialTheme.typography.headlineMedium,
-//                modifier = Modifier.align(Alignment.CenterHorizontally)
-//            )
-//            Text(
-//                text = "Email: ${user.email}",
-//                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
-//                modifier = Modifier.align(Alignment.CenterHorizontally)
-//            )
-//        } else {
-//            // Display a loading indicator or message
-//            Text(text = "Loading user data...")
-//        }
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        // Your LazyColumn and other UI elements...
-//    }
-//}
+
