@@ -3,45 +3,33 @@ package com.example.ca3_mobileintegration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.ca3_mobileintegration.ui.theme.CA3_MobileIntegrationTheme
+import androidx.navigation.compose.rememberNavController
+import com.example.ca3_mobileintegration.data.model.database.AppDatabase
+import com.example.ca3_mobileintegration.data.model.database.UserDao
+import com.example.ca3_mobileintegration.navigation.AppNavigation
+import com.example.ca3_mobileintegration.ui.theme.screens.RegistrationScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        val db = AppDatabase.getDatabase(applicationContext)
+        val userDao = db.userDao()
+
         setContent {
-            CA3_MobileIntegrationTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            // Pass userDao to the RegistrationScreen
+//            RegistrationScreen(userDao = userDao)
+            MainAppContent(userDao = userDao)
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun MainAppContent(userDao: UserDao) {
+    // Create a NavController for managing screen navigation
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CA3_MobileIntegrationTheme {
-        Greeting("Android")
-    }
+    // Pass the userDao to AppNavigation
+    AppNavigation(navController = navController, userDao = userDao)
 }
