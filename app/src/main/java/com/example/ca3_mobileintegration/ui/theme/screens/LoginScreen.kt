@@ -1,5 +1,6 @@
 package com.example.ca3_mobileintegration.ui.theme.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -16,6 +17,8 @@ import androidx.navigation.NavHostController
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.ca3_mobileintegration.data.model.database.UserDao
@@ -31,70 +34,99 @@ fun LoginScreen(navController: NavHostController, userDao: UserDao) {
 
     val coroutineScope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Login", style = MaterialTheme.typography.headlineMedium)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
+        // Background image
+        val backgroundImage = painterResource(id = com.example.ca3_mobileintegration.R.drawable.background)
+        Image(
+            painter = backgroundImage,// Replace with your image
+            contentDescription = "Background Image",
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center),
+            contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                isLoading = true
-                errorMessage = ""
-
-                coroutineScope.launch {
-                    val user = userDao.getUserByEmail(email)
-                    if (user != null && user.password == password) {
-                        navController.navigate(Screen.Home.route) // Navigate to HomeScreen
-                    } else {
-                        errorMessage = "Invalid email or password"
-                    }
-                    isLoading = false
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .align(Alignment.Center), // Center the form on screen
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Login")
-        }
+            // Welcome message
+            Text(
+                text = "Welcome to HydraBloom",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(bottom = 24.dp),
+                color = Color.White // Make sure the text is visible on top of the background
+            )
+            Text(
+                text = "Login",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(bottom = 24.dp),
+                color = Color.White
+                )
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        if (isLoading) {
-            CircularProgressIndicator()
-        }
 
-        if (errorMessage.isNotEmpty()) {
-            Text(text = errorMessage, color = Color.Red)
-        }
+            TextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        Button(onClick = { navController.navigate(Screen.Registration.route) }) {
-            Text(text = "Go to Register")
+            TextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Password") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    isLoading = true
+                    errorMessage = ""
+
+                    coroutineScope.launch {
+                        val user = userDao.getUserByEmail(email)
+                        if (user != null && user.password == password) {
+                            navController.navigate(Screen.Home.route) // Navigate to HomeScreen
+                        } else {
+                            errorMessage = "Invalid email or password"
+                        }
+                        isLoading = false
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Login")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (isLoading) {
+                CircularProgressIndicator()
+            }
+
+            if (errorMessage.isNotEmpty()) {
+                Text(text = errorMessage, color = Color.Red)
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(onClick = { navController.navigate(Screen.Registration.route) }) {
+                Text(text = "Go to Register")
+            }
         }
     }
 }

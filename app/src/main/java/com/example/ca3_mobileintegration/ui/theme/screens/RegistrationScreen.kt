@@ -1,5 +1,6 @@
 package com.example.ca3_mobileintegration.ui.theme.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -10,6 +11,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -29,6 +32,19 @@ fun RegistrationScreen(navController: NavHostController, userDao: UserDao) {
     var successMessage by remember { mutableStateOf("") }
 
     val coroutineScope = rememberCoroutineScope()
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // Background image
+        val backgroundImage = painterResource(id = com.example.ca3_mobileintegration.R.drawable.background)
+        Image(
+            painter = backgroundImage,// Replace with your image
+            contentDescription = "Background Image",
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center),
+            contentScale = ContentScale.Crop
+        )
 
     Column(
         modifier = Modifier
@@ -37,7 +53,12 @@ fun RegistrationScreen(navController: NavHostController, userDao: UserDao) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Register", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            text = "Register To Our User",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 24.dp),
+            color = Color.White
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -118,7 +139,14 @@ fun RegistrationScreen(navController: NavHostController, userDao: UserDao) {
         if (successMessage.isNotEmpty()) {
             Text(text = successMessage, color = Color.Green)
         }
-    }
-}
 
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(onClick = { navController.navigate(Screen.Login.route) }) {
+            Text(text = "Go to Log in")
+        }
+    }
+
+}
+}
 
