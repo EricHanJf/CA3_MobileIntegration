@@ -14,7 +14,7 @@ import com.example.ca3_mobileintegration.ui.theme.screens.RegistrationScreen
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
-    object Home : Screen("home/{email}")
+    object Home : Screen("home/{email}/{name}")
     object AddPlant : Screen("add_plant")
     object Registration : Screen("registration")
     object PlantList : Screen("plant_list")
@@ -27,19 +27,11 @@ fun AppNavigation(navController: NavHostController, userDao: UserDao) {
         composable(Screen.Login.route) {
             LoginScreen(navController,userDao)
         }
-//        composable(Screen.Home.route) {
-//            HomeScreen(navController)
-//        }
-        composable("home/{email}") { backStackEntry ->
+        composable("home/{email}/{name}") { backStackEntry ->
             val email = backStackEntry.arguments?.getString("email") ?: ""
-            HomeScreen(navController, email) // Pass the email to HomeScreen
+            val name = backStackEntry.arguments?.getString("name") ?: ""
+            HomeScreen(navController, email, name) // Pass both email and name to HomeScreen
         }
-
-
-//        composable(Screen.Home.route) {
-//            val userId = 1 // Retrieve this value from your authentication system
-//            HomeScreen(navController = navController, userId = userId)
-//        }
         composable(Screen.AddPlant.route) {
             AddPlantScreen(navController)
         }
